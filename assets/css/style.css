@@ -1,0 +1,18 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.modal-body {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-width: 320px;
+}
+
+.brand-logo {
+    height:20px;
+    widht:100%;
+    background:url('../images/logo.png') no-repeat center;
+    background-size:contain;
+}
