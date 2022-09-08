@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Passpoint GAP Demo</title>
+        <meta name="description" content="Static Single Web Page with Semantic HTML, Handlebars and Bootstrap v5.2.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="./assets/css/style.css">
+    </head>
+    <body>
+        <header class="bg-primary bg-opacity-25">
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto p-4">
+                <div class="brand-logo"></div>
+            </div>
+        </header>
+        <main class="flex flex-col p-4 max-w-lg mx-auto"></main>
+
+        <script id="main-template" type="text/x-handlebars-template">
+            {{> header}}
+            {{> sign_up }}
+            {{> footer hide_portal='d-none'}}
+        </script>
+
+        <script id="header-partial" type="text/x-handlebars-partial">
+            <header class="text-center mb-3">
+                <h2>
+                    Welcome to the Intertouch Passpoint Guest Account Portal
+                </h2>
+                <hr>
+            </header>
+        </script>
+        <script id="footer-partial" type="text/x-handlebars-partial">
+            <footer class="col-xs-12 col-sm-8 col-lg-6 mx-auto pt-3">
+                <div class="d-flex justify-content-between flex-column-reverse flex-sm-row">
+                    <div class="form-text">© 2022 interTouch Pte. Ltd</div>
+                    <div class="form-text d-flex flex-column flex-sm-row">
+                        {{> portal_link }}
+                        <a href="#" class="btn-privacy-policy me-2" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
+                        <a href="#" class="btn-terms-conditions me-2" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
+                        <div class="dropup">
+                            <a href="#" class="btn-need-help" data-bs-toggle="dropdown" aria-expanded="false">Need Help?</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-end p-2 text-left">
+                                <li class="dropdown-header">You appear to be running Chrome on Windows 10.0</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-header">If you are having problems or need assistance, we welcome you to contact us directly</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="mailto:portal-support@intertouch.com">Email interTouch Portal Support</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-header">You are currently using Ed's Demo of Passpoint GAP Page</li>
+                                <li class="dropdown-header">Copyright © 2010-2022 interTouch Pte. Ltd. All rights reserved.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="mb-0">Terms & Conditions</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    {{{terms}}}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="mb-0">Privacy Policy</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    {{{privacy_policy}}}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </script>
+
+        <script id="sign_up-template" type="text/x-handlebars-template">
+            {{> header}}
+            {{> sign_up }}
+            {{> footer hide_portal='d-none'}}
+        </script>
+        <script id="sign_up-partial" type="text/x-handlebars-partial">
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                {{#if (does_url_have 'from_portal=true')}}
+                    <div class="mb-3">
+                        <div class="form-text mb-3">
+                            {{> portal_link}}
+                        </div>
+                    </div>
+                {{/if}}
+
+                <div class="mb-3">
+                    {{> qr_canvas }}
+
+                    {{> group_buttons
+                        btn1_label='Sign Up' btn1_color='primary' btn1_option='sign-up'
+                        btn2_label='Sign In' btn2_color='light' btn2_option='sign-in'
+                    }}
+
+                    <div class="h5 mb-3">
+                        Create your free Paspoint profile to get secure Wi-Fi at any participating networks in just 2 steps!
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="h5">
+                            Step 1 - Register
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    <form class="mb-3">
+                        {{#unless user.email}}
+                            <div class="form-text mb-1">Get started by providing your Email Address.</div>
+                            <div class="input-group mb-3">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="user_email" placeholder="Email Address" required/>
+                                    <label for="user_email">Email Address</label>
+                                </div>
+                                <input type="submit" class="btn btn-primary btn-get-started" value="Get Started"/>
+                            </div>
+                        {{else}}
+                            {{#if (does_url_have 'require_verification=true')}}
+                                {{#unless user.verified}}
+                                    <div class="form-text mb-1">Verification code has been sent to your email address. Enter the verification code below.</div>
+                                        {{> floating_input type='number' id='user_code' label='Verification Code' placeholder="123456" required=1 margin=1}}
+                                        <div class="form-text mb-3"><a href="#" class='btn-confirmation-instructions'>Didn't receive confirmation instructions?</a></div>
+                                        <div class="d-flex">
+                                        {{> form_buttons type='button' color='light' label='Back' option='btn-sign-up' me=1}}
+                                        <input type="submit" class="btn btn-primary btn-get-started" value="Continue"/>
+                                    </div>
+                                {{else}}
+                                    <div class="form-text mb-1">Setup your password</div>
+                                    {{> floating_input type='password' id='user_password' label='Password' placeholder="Password" required=1 margin=1}}
+                                    {{> floating_input type='password' id='user_password_confirm' label='Confirm Password' required=1 placeholder="Password" margin=1}}
+                                    {{> form_buttons type='submit' color='primary' label='Sign up' option='btn-profiles signed-up'}}
+                                {{/unless}}
+                            {{else}}
+                                <div class="form-text mb-1">Setup your password</div>
+                                {{> floating_input type='password' id='user_password' label='Password' placeholder="Password" required=1 margin=1}}
+                                {{> floating_input type='password' id='user_password_confirm' label='Confirm Password' required=1 placeholder="Password" margin=1}}
+                                {{> form_buttons type='submit' color='primary' label='Sign up' option='btn-profiles signed-up'}}
+                            {{/if}}
+                        {{/unless}}
+                    </form>
+                    {{> learn_more_passpoint}}
+                </div>
+                </div>
+        </script>
+
+        <script id="learn_more_passpoint-partial" type="text/x-handlebars-partial">
+            <div class="bg-primary bg-opacity-25 p-3 mb-3 rounded btn-passpoint-info" style="cursor:pointer">
+                <div class="h5 mb-0">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            Learn more about Passpoint
+                        </div>
+                        <div>
+                            <i class="bi bi-plus-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none">
+                    <div class="h5">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                What is Passpoint?
+                            </div>
+                            <div>
+                                <i class="bi bi-dash-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-text mb-3" style="text-indent:30px;">
+                        Wi-Fi CERTIFIED Passpoint® is an industry-wide solution that streamlines Wi-Fi access and eliminates the need for users to find and authenticate a network each time they visit.
+                    </div>
+                    <div class="h5">
+                        Why Passpoint?
+                    </div>
+                    <div class="form-text mb-3" style="text-indent:30px;">
+                        Passpoint improves the mobile user experience by offering: Automatic network discovery and selection. Simplified online sign-up and instant account provisioning. Seamless network access and roaming between hotspots.
+                    </div>
+                    <div class="h5">
+                        What does this mean?
+                    </div>
+                    <div class="form-text" style="text-indent:30px;">
+                        With Passpoint, you no longer have to worry which Wi-Fi to connect to and what account you should use to connect with our participating networks.
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script id="confirmation_instructions-template" type="text/x-handlebars-template">
+            {{> header}}
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                <div class="mb-3">
+                    <div class="btn-group btn-group-lg w-100 mb-3" role="group" aria-label="Large button group">
+                      <button type="button" class="btn btn-primary btn-sign-up">Sign Up</button>
+                      <button type="button" class="btn btn-light  btn-sign-in">Sign In</button>
+                    </div>
+
+                    <div class="h5 mb-3">
+                        Resend Confirmation Instructions
+                    </div>
+                    <div class="form-text mb-3">
+                        Provide the email address used to sign up for a Passpoint profile
+                    </div>
+                    <form>
+                        {{> floating_input type='email' id='user_email' label='Email Address' placeholder="name@example.com" required=1 margin=1}}
+                        <div class="d-flex">
+                            {{> form_buttons type='button' color='light' label='Back' option='btn-sign-up' me=1}}
+                            {{> form_buttons type='submit' color='primary' label='Continue' option='btn-sign-in confirmation-instructions'}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{> footer }}
+        </script>
+
+        <script id="sign_in-template" type="text/x-handlebars-template">
+            {{> header}}
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                <div class="mb-3">
+                    <div class="btn-group btn-group-lg w-100 mb-3" role="group" aria-label="Large button group">
+                      <button type="button" class="btn btn-light btn-sign-up">Sign Up</button>
+                      <button type="button" class="btn btn-primary  btn-sign-in">Sign In</button>
+                    </div>
+
+                    {{#if message}}
+                        <div class="mb-3">
+                            <div class="form-text bg-success bg-opacity-25 text-success rounded p-3">
+                            {{message}}
+                            </div>
+                        </div>
+                    {{/if}}
+
+                    <div class="h5 mb-3">
+                        Sign in to download and connect to your Passpoint profile!
+                    </div>
+                    <form>
+                        {{> floating_input type='email' id='user_email' label='Email Address' placeholder="name@example.com" required=1 margin=1}}
+                        {{> floating_input type='password' id='user_password' label='Password' placeholder="Password" required=1 margin=1}}
+                        <div class="form-text mb-3"><a href="#" class="btn-forget-password">Forget Password?</a></div>
+                        {{> form_buttons type='submit' color='primary' label='Continue' option='btn-profiles signed-in'}}
+                    </form>
+                </div>
+            </div>
+            {{> footer }}
+        </script>
+        <script id="forget_password-template" type="text/x-handlebars-template">
+            {{> header}}
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                <div class="mb-3">
+                    {{> group_buttons
+                        btn1_label='Sign Up' btn1_color='light' btn1_option='sign-up'
+                        btn2_label='Sign In' btn2_color='primary' btn2_option='sign-in'
+                    }}
+
+                    <div class="h5 mb-3">
+                        Forget Password?
+                    </div>
+                    <div class="form-text mb-3">
+                        Provide the email address used to sign up for a Passpoint profile
+                    </div>
+                    <form>
+                        {{> floating_input type='email' id='user_email' label='Email Address' placeholder="name@example.com" required=1 margin=1}}
+                        <div class="d-flex">
+                            {{> form_buttons type='button' color='light' label='Back' option='btn-sign-in' me=1}}
+                            {{> form_buttons type='submit' color='primary' label='Continue' option='btn-sign-in forget-password'}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{> footer }}
+        </script>
+
+        <script id="profiles-template" type="text/x-handlebars-template">
+            {{> header}}
+            <section class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                <div class="mb-3">
+                    {{> qr_canvas }}
+
+                    {{> group_buttons
+                        btn1_label='Profiles' btn1_color='primary' btn1_option='profiles'
+                        btn2_label='Manage' btn2_color='light' btn2_option='manage'
+                    }}
+
+                    {{> message}}
+
+                    <div class="h5 mb-3">
+                        {{#if sign_up}}Step 2 - {{/if}}Create Passpoint Profile
+                    </div>
+                    {{#if sign_up}}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                        </div>
+                    {{/if}}
+                    <div class="form-text mb-3">Select your device and click Create Profile to get started</div>
+
+
+                    <div class="input-group mb-3">
+                      <select class="form-select" id="selectDevice" aria-label="selectDeviceLabel">
+                        <option value="Apple">Apple</option>
+                        <option value="Android">Android</option>
+                        <option value="Microsoft" selected>Microsoft</option>
+                      </select>
+                      <button class="btn btn-primary btn-profiles create-profile" type="button">Create Profile</button>
+                    </div>
+
+                    <div class="form-text mb-3">By clicking 'Create Profile' you understand the above steps and accept our Terms & Conditions and Privacy Policy</div>
+
+                    <div class="h5 mb-3">
+                        Listing Passpoint Profiles
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">Username/UUID</div>
+                                <div class="col-4">Device type</div>
+                                <div class="col-2">Actions</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                {{#if profile.uuid}}
+                                    <div class="col-6 text-break">{{profile.uuid}}</div>
+                                    <div class="col-4 text-break">{{profile.type}}</div>
+                                    <div class="col-2 text-center">{{> form_buttons type='submit' color='danger' label='<i class="bi bi-trash"></i>' option='btn-profiles destroy-profile'}}</div>
+                                {{else}}
+                                    <div class="col-6 text-break">-</div>
+                                    <div class="col-4 text-break">-</div>
+                                    <div class="col-2 text-center">-</div>
+                                {{/if}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            {{> footer }}
+        </script>
+
+        <script id="manage-template" type="text/x-handlebars-template">
+            {{> header}}
+            <div class="col-xs-12 col-sm-8 col-lg-6 mx-auto">
+                <div class="mb-3">
+                    {{> group_buttons
+                        btn1_label='Profiles' btn1_color='light' btn1_option='profiles'
+                        btn2_label='Manage' btn2_color='primary' btn2_option='manage'
+                    }}
+
+                    {{> message}}
+
+                    <div class="h5 mb-3">
+                        Edit Profile
+                    </div>
+                    <form class="mb-3">
+                        {{> floating_input type='email' id='user_email' label='Email Address' placeholder="name@example.com" value=user.email required=1 margin=1}}
+                        {{> floating_input type='password' id='user_password_new' label='New Password' placeholder="Password" required=1 margin=1}}
+                        {{> floating_input type='password' id='user_password_confirm_new' label='Confirm New Password' placeholder="Password" required=1 margin=1}}
+                        {{> floating_input type='password' id='user_password' label='Current Password' placeholder="Password" required=1 margin=1}}
+                        {{> form_buttons type='submit' color='primary' label='Update' option='btn-manage update-profile'}}
+                    </form>
+
+                    <div class="h5 mb-3">
+                        Manage your account
+                    </div>
+
+                    <div class="d-flex">
+                        {{> form_buttons type='submit' color='primary' label='Sign Out' option='btn-sign-in sign-out' me=1}}
+                        {{> form_buttons type='submit' color='danger' label='Cancel My Account' option='btn-sign-in cancel-account'}}
+                    </div>
+                </div>
+            </div>
+            {{> footer }}
+        </script>
+
+        <script id="portal_link-partial" type="text/x-handlebars-partial">
+            {{#if (does_url_have 'from_portal=true')}}
+                <a href="http://example.com" class="{{hide_portal}} me-2">Back to Portal Page<i class="bi bi-arrow-return-left"></i></a>
+            {{/if}}
+        </script>
+
+        <script id="message-partial" type="text/x-handlebars-partial">
+            {{#if message}}
+                <div class="mb-3">
+                    <div class="form-text bg-success bg-opacity-25 text-success rounded p-3">
+                    {{message}}
+                    </div>
+                </div>
+            {{/if}}
+        </script>
+
+        <script id="group_buttons-partial" type="text/x-handlebars-partial">
+            <div class="btn-group btn-group-lg w-100 mb-3" role="group" aria-label="Large button group">
+                <button type="button" class="btn btn-{{btn1_color}} btn-{{btn1_option}}">{{btn1_label}}</button>
+                <button type="button" class="btn btn-{{btn2_color}} btn-{{btn2_option}}">{{btn2_label}}</button>
+            </div>
+        </script>
+
+        <script id="form_buttons-partial" type="text/x-handlebars-partial">
+            <div class="form-buttons {{#if me}}me-3{{/if}}">
+                <button type="{{type}}" class="btn btn-{{color}} {{option}}">{{{label}}}</button>
+            </div>
+        </script>
+
+        <script id="floating_input-partial" type="text/x-handlebars-partial">
+            <div class="form-floating {{#if margin}}mb-3{{/if}}">
+              <input type="{{type}}" class="form-control" id="{{id}}" placeholder="{{placeholder}}" value="{{value}}" {{#if required}}required{{/if}} />
+              <label for="{{id}}">{{label}}</label>
+            </div>
+        </script>
+
+        <script id="qr_canvas-partial" type="text/x-handlebars-partial">
+            <div class="mb-3 border rounded px-4 p-2 d-none d-md-flex align-items-center justify-content-evenly">
+                <div>
+                    <div class="h6 text-left mb-1">
+                        Got a mobile device? Scan this QR code and download a Passpoint profile instantly!
+                    </div>
+                </div>
+                <div>
+                    <div class="mx-auto" style="width: 120px; height: 120px;">
+                        {{{qr_svg}}}
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <script src="./assets/js/handlebars.min.js"></script>
+        <script src="./assets/js/handlebars.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+        <script src="./assets/js/script.js"></script>
+        <script src="./assets/js/literals.js"></script>
+    </body>
+</html>
